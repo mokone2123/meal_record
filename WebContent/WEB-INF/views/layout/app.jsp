@@ -11,7 +11,15 @@
     <body>
         <div id="wrapper">
             <div id="header">
+                <div id ="header_menu">
                 <h1>食事記録システム</h1>
+                </div>
+                <c:if test="${sessionScope.login_user != null}">
+                    <div id="user_id">
+                        <c:out value="${sessionScope.login_user.user_id}" />&nbsp;さん&nbsp;&nbsp;&nbsp;
+                        <a href="<c:url value='/logout' />">ログアウト</a>
+                    </div>
+                </c:if>
             </div>
             <div id="content">
                 ${param.content}
