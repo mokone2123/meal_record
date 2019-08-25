@@ -12,7 +12,7 @@ import javax.persistence.Table;
 @Table(name = "User")
 @NamedQueries({
     @NamedQuery(
-            name = "checkRegisteredCode",
+            name = "checkRegisteredUserid",
             query = "SELECT COUNT(u) FROM User AS u WHERE u.user_id = :user_id"
             ),
     @NamedQuery(

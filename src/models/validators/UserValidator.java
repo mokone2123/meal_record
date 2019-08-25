@@ -35,11 +35,11 @@ public class UserValidator {
         // 既に登録されているIDとの重複チェック
         if(user_id_duplicate_check_flag) {
             EntityManager em = DBUtil.createEntityManager();
-            long employees_count = (long)em.createNamedQuery("checkRegisteredUserid", Long.class)
+            long users_count = (long)em.createNamedQuery("checkRegisteredUserid", Long.class)
                                            .setParameter("user_id", user_id)
                                              .getSingleResult();
             em.close();
-            if(employees_count > 0) {
+            if(users_count > 0) {
                 return "入力されたIDは既に使用されています。";
             }
         }
