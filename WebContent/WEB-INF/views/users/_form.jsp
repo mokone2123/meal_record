@@ -10,8 +10,8 @@
     </div>
 </c:if>
 
-<label for="name">ID</label><br />
-<input type="text" name="name" value="${user.user_id}" />
+<label for="user_id">ID</label><br />
+<input type="text" name="user_id" value="${user.user_id}" />
 <br /><br />
 
 <label for="password">パスワード</label><br />
