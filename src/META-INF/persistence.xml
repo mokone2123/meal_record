@@ -3,6 +3,7 @@
 	<persistence-unit name="meal_record" transaction-type="RESOURCE_LOCAL">
 		<provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 		<class>models.User</class>
+		<class>models.Record</class>
 		<properties>
 			<property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
 			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost/meal_record?useSSL=false&amp;useUnicode=true&amp;characterEncoding=utf8"/>

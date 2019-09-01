@@ -15,8 +15,17 @@
                 <h1>食事記録システム</h1>
                 </div>
                 <c:if test="${sessionScope.login_user != null}">
+
                     <div id="user_id">
                         <c:out value="${sessionScope.login_user.user_id}" />&nbsp;さん&nbsp;&nbsp;&nbsp;
+                                            <c:choose>
+                    <c:when test="${index == true}">
+                        <a href="<c:url value='/records/new' />">登録</a>&nbsp;
+                    </c:when>
+                    <c:otherwise>
+                        <a href="<c:url value='/index' />">一覧</a>&nbsp;
+                    </c:otherwise>
+                    </c:choose>
                         <a href="<c:url value='/logout' />">ログアウト</a>
                     </div>
                 </c:if>
