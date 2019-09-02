@@ -18,11 +18,11 @@
 <br /><br />
 
 <label for="lunch">昼食</label><br />
-<textarea name="lunch" rows="5" cols="20">${record.breakfast}</textarea>
+<textarea name="lunch" rows="5" cols="20">${record.lunch}</textarea>
 <br /><br />
 
 <label for="dinner">夕食</label><br />
-<textarea name="dinner" rows="5" cols="20">${record.breakfast}</textarea>
+<textarea name="dinner" rows="5" cols="20">${record.dinner}</textarea>
 <br /><br />
 
 <input type="hidden" name="_token" value="${_token}" />

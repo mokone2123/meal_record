@@ -23,7 +23,7 @@
                         <a href="<c:url value='/records/new' />">登録</a>&nbsp;
                     </c:when>
                     <c:otherwise>
-                        <a href="<c:url value='/index' />">一覧</a>&nbsp;
+                        <a href="<c:url value='/index.html' />">一覧</a>&nbsp;
                     </c:otherwise>
                     </c:choose>
                         <a href="<c:url value='/logout' />">ログアウト</a>
