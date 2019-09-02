@@ -24,7 +24,7 @@
                         <td class="record_breakfast">${record.breakfast}</td>
                         <td class="record_lunch">${record.lunch}</td>
                         <td class="record_dinner">${record.dinner}</td>
-                        <td class="record_action"><a href="<c:url value='/records/edit?id=${record.id}' />">編集する</a><a href="<c:url value='/records/delete?id=${record.id}' />">削除する</a></td>
+                        <td class="record_action"><a href="<c:url value='/records/edit?id=${record.id}' />">編集する</a><br /><a href="<c:url value='/records/delete?id=${record.id}' />">削除する</a></td>
                     </tr>
                </c:forEach>
             </tbody>
