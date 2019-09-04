@@ -43,6 +43,8 @@ public class TopPageIndexServlet extends HttpServlet {
                                 .getResultList();
         em.close();
 
+        //改行コードを変換する
+
         request.setAttribute("records", records);
         request.setAttribute("index", true);
 
