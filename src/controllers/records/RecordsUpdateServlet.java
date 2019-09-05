@@ -41,31 +41,45 @@ public class RecordsUpdateServlet extends HttpServlet {
 
             Record r = em.find(Record.class, (Integer)(request.getSession().getAttribute("record_id")));
 
-            r.setDate(Date.valueOf(request.getParameter("date")));
-            r.setBreakfast(request.getParameter("breakfast"));
-            r.setLunch(request.getParameter("lunch"));
-            r.setDinner(request.getParameter("dinner"));
+            // 編集前と日付が変わった場合、同じ日付の記録が登録されているかチェックする
+            // 登録されていた場合は、編集画面にリダイレクトする
+            Date date = Date.valueOf(request.getParameter("date"));
+            if(date != r.getDate() && (long)em.createNamedQuery("getSameDateRecord", Long.class).setParameter("date", date).getSingleResult() == 1){
+                    em.close();
 
-            List<String> errors = RecordValidator.validate(r);
-            if(errors.size() > 0){
-                em.close();
+                    request.setAttribute("record", r);
+                    request.setAttribute("_token", request.getSession().getId());
+                    request.setAttribute("errors", "同じ日付の記録が登録されています");
 
-                request.setAttribute("_token", request.getSession().getId());
-                request.setAttribute("record", r);
-                request.setAttribute("errors", errors);
+                    RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/records/edit.jsp");
+                    rd.forward(request, response);
+            } else{
+                r.setDate(Date.valueOf(request.getParameter("date")));
+                r.setBreakfast(request.getParameter("breakfast"));
+                r.setLunch(request.getParameter("lunch"));
+                r.setDinner(request.getParameter("dinner"));
 
-                RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/records/edit.jsp");
-                rd.forward(request, response);
-            } else {
-                em.getTransaction().begin();
-                em.getTransaction().commit();
-                em.close();
-                request.getSession().setAttribute("flush", "更新が完了しました。");
+                List<String> errors = RecordValidator.validate(r);
+                if(errors.size() > 0){
+                    em.close();
 
-                request.getSession().removeAttribute("report_id");
+                    request.setAttribute("_token", request.getSession().getId());
+                    request.setAttribute("record", r);
+                    request.setAttribute("errors", errors);
 
-                response.sendRedirect(request.getContextPath() + "/index.html");
-                }
+                    RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/records/edit.jsp");
+                    rd.forward(request, response);
+                } else {
+                    em.getTransaction().begin();
+                    em.getTransaction().commit();
+                    em.close();
+                    request.getSession().setAttribute("flush", "更新が完了しました。");
+
+                    request.getSession().removeAttribute("report_id");
+
+                    response.sendRedirect(request.getContextPath() + "/index.html");
+                    }
+            }
         }
     }
 

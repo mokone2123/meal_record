@@ -31,6 +31,10 @@ import javax.persistence.Table;
             name = "getMyRecordsCount",
             query = "SELECT COUNT(r) FROM Record AS r WHERE r.user = :user"
             ),
+    @NamedQuery(
+            name = "getSameDateRecord",
+            query = "SELECT COUNT(r) FROM Record AS r WHERE r.date = :date"
+            )
 })
 @Entity
 public class Record {

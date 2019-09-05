@@ -40,11 +40,23 @@ public class RecordsCreateServlet extends HttpServlet {
         if(_token != null && _token.equals(request.getSession().getId())){
             EntityManager em = DBUtil.createEntityManager();
 
+            // 作成する記録の日付を確認し、同じ日付の記録が既にある場合は、登録画面にリダイレクトする
+            Date date = Date.valueOf(request.getParameter("date"));
+            if((long)em.createNamedQuery("getSameDateRecord", Long.class).setParameter("date", date).getSingleResult() == 1){
+                em.close();
+
+                request.setAttribute("errors", "同じ日付の記録が登録されています");
+
+                RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/records/new.jsp");
+                rd.forward(request, response);
+            }
+            else{
+
             Record r = new Record();
 
             r.setUser((User)request.getSession().getAttribute("login_user"));
 
-            r.setDate(Date.valueOf(request.getParameter("date")));
+            r.setDate(date);
             r.setBreakfast(request.getParameter("breakfast"));
             r.setLunch(request.getParameter("lunch"));
             r.setDinner(request.getParameter("dinner"));
@@ -67,6 +79,7 @@ public class RecordsCreateServlet extends HttpServlet {
                 request.getSession().setAttribute("flush", "登録が完了しました。");
 
                 response.sendRedirect(request.getContextPath() + "/index.html");
+            }
             }
         }
     }
