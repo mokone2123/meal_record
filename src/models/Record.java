@@ -16,14 +16,6 @@ import javax.persistence.Table;
 @Table(name = "records")
 @NamedQueries({
     @NamedQuery(
-            name = "getAllRecords",
-            query = "SELECT r FROM Record AS r ORDER BY r.id DESC"
-            ),
-    @NamedQuery(
-            name = "getRecordsCount",
-            query = "SELECT COUNT(r) FROM Record AS r"
-            ),
-    @NamedQuery(
             name = "getMyAllRecords",
             query = "SELECT r FROM Record AS r WhERE r.user = :user ORDER BY r.date DESC"
             ),
@@ -34,7 +26,7 @@ import javax.persistence.Table;
     @NamedQuery(
             name = "getSameDateRecord",
             query = "SELECT COUNT(r) FROM Record AS r WHERE r.date = :date"
-            )
+            ),
 })
 @Entity
 public class Record {

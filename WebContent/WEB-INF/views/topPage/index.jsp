@@ -25,33 +25,15 @@
                         <td class="record_lunch">${record.lunch}</td>
                         <td class="record_dinner">${record.dinner}</td>
                         <td class="record_action"><a href="<c:url value='/records/edit?id=${record.id}' />">編集する</a><br />
-<%--                             <a href="#" onclick="confirmDestroy(status.count);">削除する</a>
-                            <form method="POST" action="<c:url value='/records/destroy?id=${record.id}'/>">
-                            <input type="hidden" name="_token" value="${_token}" />
-                            </form>
-                            <script>
-                             function confirmDestroy(count){
-                                    if(confirm("本当に削除してよろしいですか？")){
-                                    document.forms[count].submit();
-                                    debug.log(count);
-                                    }
-                                    debug.log("カウントは:"+ count);
-
-                            </script>
-                            } --%>
                         </td>
                     </tr>
                </c:forEach>
 
             </tbody>
         </table>
-
-    </c:param>
-</c:import>
-
-        <%-- <div id="pagination">
-        （全 ${reports_count} 件）<br />
-            <c:forEach var="i" begin="1" end="${((reports_count - 1) / 15) + 1}" step="1">
+        <div id="pagination">
+        （全 ${records_count} 件）<br />
+            <c:forEach var="i" begin="1" end="${((records_count - 1) / 10) + 1}" step="1">
                 <c:choose>
                     <c:when test="${i == page}">
                         <c:out value="${i}" />&nbsp;
@@ -63,5 +45,5 @@
             </c:forEach>
 
         </div>
-        <p><a href="<c:url value='/reports/new' />">新規日報の登録</a></p>
- --%>
+    </c:param>
+</c:import>

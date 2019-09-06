@@ -38,15 +38,33 @@ public class TopPageIndexServlet extends HttpServlet {
 
         User login_user = (User)request.getSession().getAttribute("login_user");
 
+        int page;
+        try{
+            page = Integer.parseInt(request.getParameter("page"));
+        } catch(Exception e){
+            page = 1;
+        }
+
         List<Record> records = em.createNamedQuery("getMyAllRecords", Record.class)
                                 .setParameter("user", login_user)
+                                .setFirstResult(10 * (page - 1))
+                                .setMaxResults(10)
                                 .getResultList();
+
+        long records_count = (long)em.createNamedQuery("getMyRecordsCount", Long.class)
+                .setParameter("user", login_user)
+                .getSingleResult();
+
         em.close();
 
         //改行コードを変換する
 
+
+        // 各パラメータを設定
         request.setAttribute("records", records);
         request.setAttribute("index", true);
+        request.setAttribute("records_count", records_count);
+        request.setAttribute("page", page);
 
         // フラッシュメッセージの設定
         if(request.getSession().getAttribute("flush") != null) {
