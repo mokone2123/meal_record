@@ -1,6 +1,7 @@
 package controllers.toppage;
 
 import java.io.IOException;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -57,8 +58,14 @@ public class TopPageIndexServlet extends HttpServlet {
 
         em.close();
 
-        //改行コードを変換する
-
+        // textarea内の改行をbrに置き換える
+        Iterator<Record> i_records = records.iterator();
+        while(i_records.hasNext()){
+            Record r = i_records.next();
+            r.setBreakfast(r.getBreakfast().replace("\r\n" ,"<br/>"));
+            r.setLunch(r.getLunch().replace("\r\n" ,"<br/>"));
+            r.setDinner(r.getDinner().replace("\r\n" ,"<br/>"));
+        }
 
         // 各パラメータを設定
         request.setAttribute("records", records);
