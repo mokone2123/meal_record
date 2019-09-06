@@ -39,33 +39,50 @@ public class UsersCreateServlet extends HttpServlet {
         if(_token != null && _token.equals(request.getSession().getId())) {
             EntityManager em = DBUtil.createEntityManager();
 
-            User u = new User();
-
-            u.setUser_id(request.getParameter("user_id"));
-            u.setPassword(
-                    EncryptUtil.getPasswordEncrypt(
-                            request.getParameter("password"),
-                            (String)this.getServletContext().getAttribute("salt")
-                            )
-                    );
-            List<String> errors = UserValidator.validate(u, true, true);
-            if(errors.size() > 0) {
+            // 同じidが登録済みの場合は、登録画面にリダイレクトする
+            if((long)em.createNamedQuery("checkRegisteredUserid", Long.class)
+                    .setParameter("user_id", request.getParameter("user_id"))
+                    .getSingleResult() >= 1){
                 em.close();
 
                 request.setAttribute("_token", request.getSession().getId());
-                request.setAttribute("user", u);
-                request.setAttribute("errors", errors);
+                request.setAttribute("user",  new User());
+                request.setAttribute("errors", "そのIDは既に使用されています");
 
                 RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/users/new.jsp");
                 rd.forward(request, response);
-            } else {
-                em.getTransaction().begin();
-                em.persist(u);
-                em.getTransaction().commit();
-                em.close();
-                request.getSession().setAttribute("flush", "登録が完了しました。");
+            }
+            else{
+                User u = new User();
 
-                response.sendRedirect(request.getContextPath() + "/index.html");
+                u.setUser_id(request.getParameter("user_id"));
+                u.setPassword(
+                        EncryptUtil.getPasswordEncrypt(
+                                request.getParameter("password"),
+                                (String)this.getServletContext().getAttribute("salt")
+                                )
+                        );
+                List<String> errors = UserValidator.validate(u, true, true);
+                if(errors.size() > 0) {
+                    em.close();
+
+                    request.setAttribute("_token", request.getSession().getId());
+                    request.setAttribute("user", u);
+                    request.setAttribute("errors", errors);
+
+                    RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/users/new.jsp");
+                    rd.forward(request, response);
+                } else {
+                    em.getTransaction().begin();
+                    em.persist(u);
+                    em.getTransaction().commit();
+                    em.close();
+
+                    request.getSession().setAttribute("login_user", u);
+                    request.getSession().setAttribute("flush", "登録が完了しました。");
+
+                    response.sendRedirect(request.getContextPath() + "/index.html");
+                }
             }
         }
     }

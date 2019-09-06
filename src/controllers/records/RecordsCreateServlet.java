@@ -42,7 +42,10 @@ public class RecordsCreateServlet extends HttpServlet {
 
             // 作成する記録の日付を確認し、同じ日付の記録が既にある場合は、登録画面にリダイレクトする
             Date date = Date.valueOf(request.getParameter("date"));
-            if((long)em.createNamedQuery("getSameDateRecord", Long.class).setParameter("date", date).getSingleResult() == 1){
+            if((long)em.createNamedQuery("checkSameDateRecord", Long.class)
+                        .setParameter("date", date)
+                        .setParameter("user", (User)request.getSession().getAttribute("login_user"))
+                        .getSingleResult() == 1){
                 em.close();
 
                 request.setAttribute("errors", "同じ日付の記録が登録されています");

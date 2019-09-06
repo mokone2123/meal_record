@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import models.Record;
+import models.User;
 import models.validators.RecordValidator;
 import utils.DBUtil;
 
@@ -44,7 +45,10 @@ public class RecordsUpdateServlet extends HttpServlet {
             // 編集前と日付が変わった場合、同じ日付の記録が登録されているかチェックする
             // 登録されていた場合は、編集画面にリダイレクトする
             Date date = Date.valueOf(request.getParameter("date"));
-            if(date != r.getDate() && (long)em.createNamedQuery("getSameDateRecord", Long.class).setParameter("date", date).getSingleResult() == 1){
+            if(!date.equals(r.getDate()) && (long)em.createNamedQuery("checkSameDateRecord", Long.class)
+                    .setParameter("date", date)
+                    .setParameter("user", (User)request.getSession().getAttribute("login_user"))
+                    .getSingleResult() == 1){
                     em.close();
 
                     request.setAttribute("record", r);

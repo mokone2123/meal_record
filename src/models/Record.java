@@ -24,8 +24,8 @@ import javax.persistence.Table;
             query = "SELECT COUNT(r) FROM Record AS r WHERE r.user = :user"
             ),
     @NamedQuery(
-            name = "getSameDateRecord",
-            query = "SELECT COUNT(r) FROM Record AS r WHERE r.date = :date"
+            name = "checkSameDateRecord",
+            query = "SELECT COUNT(r) FROM Record AS r WHERE r.user = :user AND r.date = :date"
             ),
 })
 @Entity
