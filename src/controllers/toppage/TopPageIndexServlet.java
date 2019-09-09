@@ -35,6 +35,7 @@ public class TopPageIndexServlet extends HttpServlet {
      * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
         EntityManager em = DBUtil.createEntityManager();
 
         User login_user = (User)request.getSession().getAttribute("login_user");
@@ -48,8 +49,8 @@ public class TopPageIndexServlet extends HttpServlet {
 
         List<Record> records = em.createNamedQuery("getMyAllRecords", Record.class)
                                 .setParameter("user", login_user)
-                                .setFirstResult(10 * (page - 1))
-                                .setMaxResults(10)
+                                .setFirstResult(Integer.parseInt((String)this.getServletContext().getAttribute("PAGENATION_COUNT")) * (page - 1))
+                                .setMaxResults(Integer.parseInt((String)this.getServletContext().getAttribute("PAGENATION_COUNT")))
                                 .getResultList();
 
         long records_count = (long)em.createNamedQuery("getMyRecordsCount", Long.class)

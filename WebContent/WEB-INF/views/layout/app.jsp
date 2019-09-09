@@ -12,7 +12,7 @@
         <div id="wrapper">
             <div id="header">
                 <div id ="header_menu">
-                <h1>食事記録システム</h1>
+                <h1><a href="<c:url value='/index.html' />">食事記録システム</a></h1>
                 </div>
                 <c:if test="${sessionScope.login_user != null}">
 
